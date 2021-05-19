@@ -10,9 +10,6 @@ public class FileManager {
 	}
 	
 	public void readFile(String path) throws IOException {
-		File csv = new File(path);
-		BufferedReader br = new BufferedReader(new FileReader(csv));
-
 		Path filePath = Paths.get(path);
 		List<String> lines = Files.readAllLines(filePath);
 		
