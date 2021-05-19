@@ -9,12 +9,14 @@ public class Transaction { //튜플 1개의 정보
 	int month;
 	int stItemCode;
 	String city;
+	double marketRate;
 	int dupCount;
 	
 	public Transaction(String[] token) {
-		this.stKind = token[4];
-		this.stItem = token[8];
-		this.marketName = token[21].substring(0, token[21].length()-1);
+		this.stKind = token[8];
+		this.stItem = token[4];
+		if(token[21].length() == 0) this.marketName = "";
+		else this.marketName = token[21].substring(0, token[21].length()-1);
 		this.itemRate = token[12];
 		this.unit = token[15];
 		this.monAvgPrice = Integer.parseInt(token[16]);
@@ -23,6 +25,8 @@ public class Transaction { //튜플 1개의 정보
 		this.month = Integer.parseInt(temp);
 		this.stItemCode = Integer.parseInt(token[3]);
 		this.city = token[19];
+		this.marketRate = 0.0;
 		this.dupCount = 0;
+		
 	}
 }

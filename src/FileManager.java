@@ -13,7 +13,7 @@ public class FileManager {
 		Path filePath = Paths.get(path);
 		List<String> lines = Files.readAllLines(filePath);
 		
-		int selectSize = 10;
+		int selectSize = 100;
 		int[] randNums = this.generateRandNums(lines.size(), selectSize); //전체크기 중 랜덤 선택
 		
 		for(int i=0; i<selectSize; i++) {
@@ -24,7 +24,7 @@ public class FileManager {
 			Transaction t = new Transaction(token);
 			
 			int dupIndex = 0;
-			if((dupIndex = this.isDuplicated(t)) > 0) { //중복 튜플이 존재한다면
+			if((dupIndex = this.isDuplicated(t)) >= 0) { //중복 튜플이 존재한다면
 				Transaction duped= trans.get(dupIndex);
 				
 				if(duped.dupCount > 5) { //5개 이상 중복된 튜플이라면
@@ -58,13 +58,17 @@ public class FileManager {
 	public int isDuplicated(Transaction t) { //중복된 튜플 확인
 		for(int i=0; i<trans.size(); i++) {
 			Transaction temp = trans.get(i);
-			if(temp.stItemCode == t.stItemCode && temp.marketName == t.marketName
+			if((temp.stKind.compareTo(t.stKind) == 0) && (temp.marketName.compareTo(t.marketName) == 0)
 					&& temp.month == t.month) {
 				return i;
 			}
 		}
 		
 		return -1;
+	}
+	
+	public Transaction[] getTransactions() {
+		return trans.toArray(new Transaction[trans.size()]);
 	}
 	
 	public void printTransactions() {
