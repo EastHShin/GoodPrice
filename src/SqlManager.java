@@ -81,7 +81,8 @@ public class SqlManager {
 			Statement st = conn.createStatement();
 			ResultSet rs;
 			
-			String query = "insert into Market values ('"+t.marketName+"', '"+t.marketRate+"', '"+t.city+"')";
+			String query = "insert into Market values ('"+t.marketName+"', '"+t.marketRate+"', '"+t.city+"')"
+					+ "on conflict (marketName) do nothing";
 			int ret = st.executeUpdate(query);
 		}
 		
@@ -108,7 +109,8 @@ public class SqlManager {
 			Statement st = conn.createStatement();
 			ResultSet rs;
 			
-			String query = "insert into Item values ('"+t.stKind+"', '"+t.stItem+"', '"+t.stItemCode+"')";
+			String query = "insert into Item values ('"+t.stKind+"', '"+t.stItem+"', '"+t.stItemCode+"')"
+					+ "on conflict (stKind) do nothing";
 			int ret = st.executeUpdate(query);
 		}
 		
@@ -122,7 +124,8 @@ public class SqlManager {
 			ResultSet rs;
 			
 			String query = "insert into Sell values ('"+t.stKind+"', '"+t.marketName+"', '"+t.itemRate+"', '"+
-					t.month+"', '"+t.unit+"', '"+t.monAvgPrice+"')";
+					t.month+"', '"+t.unit+"', '"+t.monAvgPrice+"')"
+							+ "on conflict (stkind, marketName, month) do nothing";
 			int ret = st.executeUpdate(query);
 		}
 		
@@ -209,3 +212,4 @@ public class SqlManager {
         System.out.print("\nExit SQL.");
 	}
 }
+
