@@ -152,6 +152,14 @@ public class SqlManager {
 		return -1;
 	}
 	
+	public void resetTables() throws SQLException {
+		Statement st = conn.createStatement();
+		
+		String query = "drop table if exists Market, Sell, Item, Comment, Account";
+		int ret = st.executeUpdate(query);
+		System.out.println("table reset complete.");
+	}
+	
 	public void printItemByKeyword(String keyword) throws SQLException {
 		String query = "select distinct stKind, marketName, monAvgPrice \r\n" + 
 				"from Sell\r\n" + 

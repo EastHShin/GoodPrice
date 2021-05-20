@@ -12,6 +12,7 @@ public class MainManager {
 		SqlManager sm = new SqlManager();
 		Transaction[] ts = fm.getTransactions();
 		sm.connect();
+		sm.resetTables();
 		sm.makeTables();
 		sm.insertItem(ts);
 		sm.insertMarket(ts);
