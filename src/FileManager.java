@@ -42,7 +42,7 @@ public class FileManager {
 		}
 		this.printTransactions();
 		
-		
+		System.out.println("now transactions size is "+trans.size());
 	}
 	
 	public int[] generateRandNums(int inputLen, int outputLen) { //·£´ı ÀÎµ¦½º ¹è¿­ ¸®ÅÏ

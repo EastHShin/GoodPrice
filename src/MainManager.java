@@ -41,7 +41,7 @@ public class MainManager {
 					System.out.println("지역 입력 :");
 					String place = scan.nextLine();
 					System.out.println("'"+keyword+"' 에 대한 "+place+" 시장별 가격");
-					sm.printPriceByPlace(keyword, place);
+					sm.printPriceByPlace(keyword, place, 4);
 
 				}
 

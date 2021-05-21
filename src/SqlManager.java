@@ -32,7 +32,7 @@ public class SqlManager {
 		ResultSet rs;
 		
 		String market = "CREATE TABLE if not exists Market (\r\n" + 
-				"  marketName varchar(20),marketRate float, city varchar(20),\r\n" + 
+				"  marketName varchar(20), city varchar(20),\r\n" + 
 				"primary key(marketName));";
 		String sell = "CREATE TABLE if not exists Sell (\r\n" + 
 				"  stKind varchar(20), marketName varchar(20), itemRate varchar(20), month int, unit varchar(20), monAvgPrice int,\r\n" + 
@@ -46,7 +46,7 @@ public class SqlManager {
 		String account = "CREATE TABLE if not exists Account ( Id_No int, user_Id varchar(20), password varchar(10), name varchar(10), email varchar(15),\r\n" + 
 				"primary key(Id_No)\r\n);";
 		String comment = "CREATE TABLE if not exists Comment (\r\n" + 
-				"  user_Id varchar(20), marketName varchar(20), Id_No int, comment varchar(50),\r\n" + 
+				"  user_Id varchar(20), marketName varchar(20), Id_No int, comment varchar(50), marketRate float, \r\n" + 
 				"primary key(Id_No, marketName),\r\n" + 
 				"foreign key(marketName) references Market(marketName),\r\n" + 
 				"foreign key(Id_No) references Account(Id_No)\r\n" + 
@@ -81,7 +81,7 @@ public class SqlManager {
 			Statement st = conn.createStatement();
 			ResultSet rs;
 			
-			String query = "insert into Market values ('"+t.marketName+"', '"+t.marketRate+"', '"+t.city+"')"
+			String query = "insert into Market values ('"+t.marketName+"', '"+t.city+"')"
 					+ "on conflict (marketName) do nothing";
 			int ret = st.executeUpdate(query);
 		}
@@ -161,33 +161,31 @@ public class SqlManager {
 	}
 	
 	public void printItemByKeyword(String keyword) throws SQLException {
-		String query = "select distinct stKind, marketName, monAvgPrice \r\n" + 
-				"from Sell\r\n" + 
-				"where stKind in (select stKind from Item where stItem like '%"+keyword+"%') " +
-				"order by stKind, marketName";
-		String[] types = {"s", "s", "i"};
+		String query = "select distinct stKind from Item where stItem like '%"+keyword+"%' " +
+				"order by stKind;";
+		String[] types = {"s"};
 		
 		this.executeAndPrintQuery(query, types);
         
 	}
 	
 	public void printSpecificItemByKeyword(String keyword) throws SQLException {
-		String query = "select distinct stKind, marketName, monAvgPrice \r\n" + 
+		String query = "select distinct stKind, marketName, unit, monAvgPrice\r\n" + 
 				"from Sell\r\n" + 
 				"where stKind = '"+keyword+"'" +
 				"order by monAvgPrice";
-		String[] types = {"s", "s", "i"};
+		String[] types = {"s", "s", "s", "i"};
 		
 		this.executeAndPrintQuery(query, types);
         
 	}
 	
-	public void printPriceByPlace(String keyword, String place) throws SQLException {
-		String query = "select distinct stKind, Sell.marketName, monAvgPrice, month, city\r\n" + 
+	public void printPriceByPlace(String keyword, String place, int month) throws SQLException {
+		String query = "select distinct stKind, Sell.marketName, unit, monAvgPrice\r\n" + 
 				"from Sell inner join market on Sell.marketname = market.marketname\r\n" + 
-				"where stKind = '"+keyword+"' and city like '%"+place+"%'\r\n" + 
+				"where stKind = '"+keyword+"' and month="+month+" and city like '%"+place+"%'\r\n" + 
 				"order by monAvgPrice;";
-		String[] types = {"s", "s", "i", "i", "s"};
+		String[] types = {"s", "s", "s", "i"};
 		
 		this.executeAndPrintQuery(query, types);
 	}
