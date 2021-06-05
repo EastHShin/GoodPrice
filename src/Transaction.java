@@ -16,7 +16,7 @@ public class Transaction { //튜플 1개의 정보
 		this.stKind = token[8];
 		this.stItem = token[4];
 		if(token[21].length() == 0) this.marketName = "";
-		else this.marketName = token[21].substring(0, token[21].length()-1);
+		else this.marketName = token[21].substring(0, token[21].length());
 		this.itemRate = token[12];
 		this.unit = token[15];
 		this.monAvgPrice = Integer.parseInt(token[16]);

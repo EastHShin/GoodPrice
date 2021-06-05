@@ -32,7 +32,7 @@ public class SqlManager {
 		ResultSet rs;
 		
 		String market = "CREATE TABLE if not exists Market (\r\n" + 
-				"  marketName varchar(20), city varchar(20),\r\n" + 
+				"  marketName varchar(20), city varchar(20), AvgRate float, \r\n" + 
 				"primary key(marketName));";
 		String sell = "CREATE TABLE if not exists Sell (\r\n" + 
 				"  stKind varchar(20), marketName varchar(20), itemRate varchar(20), month int, unit varchar(20), monAvgPrice int,\r\n" + 
@@ -56,6 +56,22 @@ public class SqlManager {
 		ret = st.executeUpdate(sell);
 		ret = st.executeUpdate(account);
 		ret = st.executeUpdate(comment);
+		
+		String trigger = "create or replace function TTTrg_func()\r\n" + 
+				"returns trigger AS $$\r\n" + 
+				"BEGIN\r\n" + 
+				"update Market set AvgRate = (select AVG(marketRate) from Comment where marketName = New.marketName)\r\n" + 
+				"where marketName = New.marketName;\r\n" + 
+				"return New;\r\n" + 
+				"END;\r\n" + 
+				"$$ LANGUAGE 'plpgsql';\r\n" + 
+				"\r\n" + 
+				"create trigger T\r\n" + 
+				"after insert on Comment\r\n" + 
+				"for each row\r\n" + 
+				"EXECUTE PROCEDURE TTTrg_func();\\";
+		ret = st.executeUpdate(trigger);
+		
 		
 		System.out.println("Table made.");
 	}
@@ -155,7 +171,7 @@ public class SqlManager {
 	public void resetTables() throws SQLException {
 		Statement st = conn.createStatement();
 		
-		String query = "drop table if exists Market, Sell, Item, Comment, Account";
+		String query = "drop table if exists Market, Sell, Item, Comment, Account cascade";
 		int ret = st.executeUpdate(query);
 		System.out.println("table reset complete.");
 	}
@@ -189,6 +205,17 @@ public class SqlManager {
 		
 		this.executeAndPrintQuery(query, types);
 	}
+	
+	public void printPriceByPlaceView(String keyword, String place, int month) throws SQLException {
+		String query = "create view PriceByPlace as select distinct stKind, Sell.marketName, unit, monAvgPrice, month, city from Sell inner join market on Sell.marketname = market.marketname;";
+		
+		Statement st = conn.createStatement();
+		int ret = st.executeUpdate(query);
+		query = "select * from PriceByPlace where stKind = '"+keyword+"' and month='"+month+"' and city like '%"+place+"%' order by monAvgPrice;";
+		String[] types = {"s", "s", "s", "i"};
+		this.executeAndPrintQuery(query, types);
+	}
+	
 	
 	public void executeAndPrintQuery(String query, String[] types) throws SQLException {
 		Statement st = conn.createStatement();
