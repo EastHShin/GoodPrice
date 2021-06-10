@@ -66,7 +66,7 @@ public class MainManager {
             		sm.printPriceByPlace(stkind,place, Integer.parseInt(mon));
 			System.out.println("품목 조회할 시장 입력: ");
 			String keyword = scan.nextLine();
-			sm.printItemByMarket(keyword);
+			sm.printItemPlaceView(keyword);
 			
 			//---------시나리오2
 			System.out.println("월별 거래 시기 추천");
