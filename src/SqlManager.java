@@ -281,6 +281,25 @@ public class SqlManager {
         }
 	}
 	
+	public void executeAndPrintQuery2(String query, String[] types) throws SQLException {
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery(query);
+
+		while (rs.next()) {
+        	for(int i=0; i<types.length; i++) {
+        		int hangle = 0;
+            	if(types[i] == "s") {
+            		hangle = 18 - rs.getString(i+1).length();
+            		
+            		System.out.print(String.format("%-"+hangle+"s",rs.getString(i+1)));
+            		continue;
+            	}
+        		System.out.print(String.format("%-10s", rs.getString(i+1)));
+            }
+            System.out.print("\n");
+        }
+	}
+	
 	public void disconnect() throws SQLException {
 		conn.close();
         System.out.print("\nExit SQL.");
