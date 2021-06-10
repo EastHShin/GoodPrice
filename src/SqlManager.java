@@ -43,10 +43,10 @@ public class SqlManager {
 		String item = "CREATE TABLE if not exists Item (\r\n" + 
 				"  stKind varchar(20), stItem varchar(20), stItemCode int, primary key(stKind)\r\n" + 
 				");";
-		String account = "CREATE TABLE if not exists Account ( Id_No int, user_Id varchar(20), password varchar(10), name varchar(10), email varchar(15),\r\n" + 
+		String account = "CREATE TABLE if not exists Account ( Id_No int, user_Id varchar(20), password varchar(10), name varchar(10), email varchar(30),\r\n" + 
 				"primary key(Id_No)\r\n);";
 		String comment = "CREATE TABLE if not exists Comment (\r\n" + 
-				"  user_Id varchar(20), marketName varchar(20), Id_No int, comment varchar(50), marketRate float, \r\n" + 
+				"Id_No int, marketName varchar(20), comment varchar(50), marketRate float, \r\n" + 
 				"primary key(Id_No, marketName),\r\n" + 
 				"foreign key(marketName) references Market(marketName),\r\n" + 
 				"foreign key(Id_No) references Account(Id_No)\r\n" + 
@@ -69,9 +69,11 @@ public class SqlManager {
 				"create trigger T\r\n" + 
 				"after insert on Comment\r\n" + 
 				"for each row\r\n" + 
-				"EXECUTE PROCEDURE TTTrg_func();\\";
+				"EXECUTE PROCEDURE TTTrg_func();";
 		ret = st.executeUpdate(trigger);
 		
+		String accounts = "insert into Account values(1, 'ShinSeungheon', 'asdf', '½Å½ÂÇå', 'gody8756@ajou.ac.kr');";
+		ret = st.executeUpdate(accounts);
 		
 		System.out.println("Table made.");
 	}
@@ -213,6 +215,18 @@ public class SqlManager {
 		int ret = st.executeUpdate(query);
 		query = "select * from PriceByPlace where stKind = '"+keyword+"' and month='"+month+"' and city like '%"+place+"%' order by monAvgPrice;";
 		String[] types = {"s", "s", "s", "i"};
+		this.executeAndPrintQuery(query, types);
+	}
+	
+	public void insertComment(int idNumber, String marketName, String comment, float rate) throws SQLException {
+		String query = "insert into Comment values("+idNumber+", '"+marketName+"', '"+comment+"', "+rate+");";
+		Statement st = conn.createStatement();
+		int ret = st.executeUpdate(query);
+	}
+	
+	public void printComments(String marketName) throws SQLException {
+		String query = "select * from Comment where marketName = '"+marketName+"';";
+		String[] types = {"i", "s", "s", "d"};
 		this.executeAndPrintQuery(query, types);
 	}
 	

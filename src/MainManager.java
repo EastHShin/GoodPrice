@@ -3,6 +3,17 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainManager {
+	public static boolean checkInput(Scanner scan) {
+		System.out.print("Continue? (Enter 1 for continue) : ");
+		String input = scan.nextLine();
+		
+        if(input.compareTo("1") != 0) {
+        	System.out.println("Program exit");
+        	return false;
+        }
+        return true;
+	}
+	
 	public static void main(String args[]) throws IOException, SQLException {
 		Scanner scan = new Scanner(System.in);
 		FileManager fm = new FileManager();
@@ -30,38 +41,41 @@ public class MainManager {
 		sm.insertMarket(ts);
 		sm.insertSell(ts);
 		
-		System.out.println("GoodPrice - 농수축산물 정보 조회 및 추천 서비스");
-		System.out.println("1. 키워드로 품종 검색");
-		int ans = scan.nextInt();
-		scan.nextLine();
-		
-		switch(ans) {
-			case 1:
-				System.out.print("키워드 입력 :");
-				String keyword = scan.nextLine();
-				sm.printItemByKeyword(keyword);
-				
-				System.out.print("\n세부 품목 검색 :");
-				keyword = scan.nextLine();
-				sm.printSpecificItemByKeyword(keyword);
-				
-				System.out.print("\n1. 지역 검색\t2. 종료  :");
-				ans = scan.nextInt();
-				scan.nextLine();
-				
-				if(ans == 1) {
-					System.out.println("지역 입력 :");
-					String place = scan.nextLine();
-					System.out.println("'"+keyword+"' 에 대한 "+place+" 시장별 가격asfd");
-					//sm.printPriceByPlace(keyword, place, 4);
-					
-					sm.printPriceByPlaceView(keyword, place, 4);
-				}
+//		System.out.println("GoodPrice - 농수축산물 정보 조회 및 추천 서비스");
 
-				break;
+		int idNumber = 1;
+		
+		while(true) {
+			
+			
+			//---------시나리오 3. 코멘트 입력 및 조회하기
+			if(!checkInput(scan)) System.exit(0);
+			System.out.println("\n---코멘트 입력하기---");
+			System.out.print("시장 입력 :");
+			String marketName = scan.nextLine();
+			System.out.print("코멘트 입력 :");
+			String comment = scan.nextLine();
+			System.out.print("평점 입력 :");
+			float rate = scan.nextFloat();
+			scan.nextLine();
+			
+			sm.insertComment(idNumber++, marketName, comment, rate);
+			
+			if(!checkInput(scan)) System.exit(0);
+			System.out.println("\n---코멘트 조회하기---");
+			System.out.print("시장 입력 :");
+			marketName = scan.nextLine();
+			
+			sm.printComments(marketName);
+			
+			
+			break;
 		}
+		
+		System.out.println("\n시스템 종료.");
 		
 		
 		sm.disconnect();
 	}
+	
 }
