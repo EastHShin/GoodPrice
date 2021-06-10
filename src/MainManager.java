@@ -46,6 +46,14 @@ public class MainManager {
 		int idNumber = 1;
 		
 		while(true) {
+			System.out.println("품목 조회할 시장 입력: ");
+			String keyword = scan.nextLine();
+			sm.printItemByMarket(keyword);
+			
+			System.out.println("월별 거래 시기 추천");
+			System.out.println("원하는 품목을 입력: ");
+			String keyword2 = scan.nextLine();
+			sm.recommandByMonth(keyword2);
 			
 			
 			//---------시나리오 3. 코멘트 입력 및 조회하기

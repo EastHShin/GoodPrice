@@ -230,7 +230,34 @@ public class SqlManager {
 		this.executeAndPrintQuery(query, types);
 	}
 	
+	public void recommandByMonth(String keyword) throws SQLException {
+		String query = "select stKind, month, unit, round(avg(monAvgPrice)) as AvgPrice\r\n" + 
+				"from Sell\r\n" + 
+				"where stKind like '%"+keyword+"%'\r\n" + 
+				"group by stKind, month, unit\r\n" + 
+				"order by AvgPrice;";
+		String[] types = {"s", "i", "s", "i"};
+		
+		//print attribute
+		System.out.println(" ");
+		System.out.print(String.format("%-10s%-10s%-10s%-10s","stkind","month","unit","avgprice"));
+		System.out.print("\n");
+		System.out.println("----------------------------------------------------------------------------");
+		this.executeAndPrintQuery(query, types);
+	}
 	
+	public void printItemByMarket(String marketName) throws SQLException {
+		String query = "select * from Item where stKind in (select stKind from Sell where marketName = '"+marketName+"');";
+		String[] types = {"s", "s", "i"};
+		
+		//print attribute
+		System.out.println(" ");
+		System.out.print(String.format("%-10s%-10s%-10s","stkind","stitem","stitemcode"));
+		System.out.print("\n");
+		System.out.println("----------------------------------------------------------------------------");
+		this.executeAndPrintQuery(query, types);
+	}
+
 	public void executeAndPrintQuery(String query, String[] types) throws SQLException {
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery(query);
