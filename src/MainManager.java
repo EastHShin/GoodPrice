@@ -18,17 +18,17 @@ public class MainManager {
 		Scanner scan = new Scanner(System.in);
 		FileManager fm = new FileManager();
 		
-		//fm.readFile("C:\\Users\\gody8\\eclipse-workspace\\GoodPrice\\data\\¿øÃµÁ¶»ç°¡°İÁ¤º¸_202104.csv");
+		//fm.readFile("C:\\Users\\gody8\\eclipse-workspace\\GoodPrice\\data\\ì›ì²œì¡°ì‚¬ê°€ê²©ì •ë³´_202104.csv");
 		
 		for(int i=4; i<10; i++) {
 			if(i==8) continue;
-			fm.readFile("./data/¿øÃµÁ¶»ç°¡°İÁ¤º¸_20200"+i+".csv");
+			fm.readFile("./data/ì›ì²œì¡°ì‚¬ê°€ê²©ì •ë³´_20200"+i+".csv");
 		}
 		for(int i=0; i<3; i++) {
-			fm.readFile("./data/¿øÃµÁ¶»ç°¡°İÁ¤º¸_20201"+i+".csv");
+			fm.readFile("./data/ì›ì²œì¡°ì‚¬ê°€ê²©ì •ë³´_20201"+i+".csv");
 		}
 		for(int i=1; i<5; i++) {
-			fm.readFile("./data/¿øÃµÁ¶»ç°¡°İÁ¤º¸_20210"+i+".csv");
+			fm.readFile("./data/ì›ì²œì¡°ì‚¬ê°€ê²©ì •ë³´_20210"+i+".csv");
 		}
 		
 		
@@ -41,37 +41,56 @@ public class MainManager {
 		sm.insertMarket(ts);
 		sm.insertSell(ts);
 		
-//		System.out.println("GoodPrice - ³ó¼öÃà»ê¹° Á¤º¸ Á¶È¸ ¹× ÃßÃµ ¼­ºñ½º");
+//		System.out.println("GoodPrice - ë†ìˆ˜ì¶•ì‚°ë¬¼ ì •ë³´ ì¡°íšŒ ë° ì¶”ì²œ ì„œë¹„ìŠ¤");
 
 		int idNumber = 1;
 		
 		while(true) {
-			System.out.println("Ç°¸ñ Á¶È¸ÇÒ ½ÃÀå ÀÔ·Â: ");
+			
+			//-------------ì‹œë‚˜ë¦¬ì˜¤ 1
+			System.out.println("í‚¤ì›Œë“œì— ëŒ€í•œ ì„¸ë¶€ í’ˆì¢… ê²€ìƒ‰");
+            		System.out.println("í’ˆì¢… ì…ë ¥");
+          	  	String kind = scan.nextLine();
+            		sm.printItemByKeyword(kind);
+
+            		System.out.println("ì„¸ë¶€ í’ˆì¢…ëª…ì— ëŒ€í•œ ì‹œì¥ë³„ ê°€ê²© ê²€ìƒ‰");
+            		System.out.println("ì„¸ë¶€ í’ˆì¢… ì…ë ¥");
+            		String stkind = scan.nextLine();
+            		sm.printSpecificItemByKeyword(stkind);
+
+            		System.out.println("ê²€ìƒ‰í•œ ì„¸ë¶€ í’ˆì¢…ëª…ì— ëŒ€í•œ ì§€ì—­ê³¼ ì›”ë³„ ê°€ê²© ì¡°íšŒ");
+            		System.out.println("ì§€ì—­ ì…ë ¥");
+            		String place = scan.nextLine();
+            		System.out.println("ì›” ì…ë ¥");
+            		String mon = scan.nextLine();
+            		sm.printPriceByPlace(stkind,place, Integer.parseInt(mon));
+			System.out.println("í’ˆëª© ì¡°íšŒí•  ì‹œì¥ ì…ë ¥: ");
 			String keyword = scan.nextLine();
 			sm.printItemByMarket(keyword);
 			
-			System.out.println("¿ùº° °Å·¡ ½Ã±â ÃßÃµ");
-			System.out.println("¿øÇÏ´Â Ç°¸ñÀ» ÀÔ·Â: ");
+			//---------ì‹œë‚˜ë¦¬ì˜¤2
+			System.out.println("ì›”ë³„ ê±°ë˜ ì‹œê¸° ì¶”ì²œ");
+			System.out.println("ì›í•˜ëŠ” í’ˆëª©ì„ ì…ë ¥: ");
 			String keyword2 = scan.nextLine();
 			sm.recommandByMonth(keyword2);
 			
 			
-			//---------½Ã³ª¸®¿À 3. ÄÚ¸àÆ® ÀÔ·Â ¹× Á¶È¸ÇÏ±â
+			//---------ì‹œë‚˜ë¦¬ì˜¤ 3. ì½”ë©˜íŠ¸ ì…ë ¥ ë° ì¡°íšŒí•˜ê¸°
 			if(!checkInput(scan)) System.exit(0);
-			System.out.println("\n---ÄÚ¸àÆ® ÀÔ·ÂÇÏ±â---");
-			System.out.print("½ÃÀå ÀÔ·Â :");
+			System.out.println("\n---ì½”ë©˜íŠ¸ ì…ë ¥í•˜ê¸°---");
+			System.out.print("ì‹œì¥ ì…ë ¥ :");
 			String marketName = scan.nextLine();
-			System.out.print("ÄÚ¸àÆ® ÀÔ·Â :");
+			System.out.print("ì½”ë©˜íŠ¸ ì…ë ¥ :");
 			String comment = scan.nextLine();
-			System.out.print("ÆòÁ¡ ÀÔ·Â :");
+			System.out.print("í‰ì  ì…ë ¥ :");
 			float rate = scan.nextFloat();
 			scan.nextLine();
 			
 			sm.insertComment(idNumber++, marketName, comment, rate);
 			
 			if(!checkInput(scan)) System.exit(0);
-			System.out.println("\n---ÄÚ¸àÆ® Á¶È¸ÇÏ±â---");
-			System.out.print("½ÃÀå ÀÔ·Â :");
+			System.out.println("\n---ì½”ë©˜íŠ¸ ì¡°íšŒí•˜ê¸°---");
+			System.out.print("ì‹œì¥ ì…ë ¥ :");
 			marketName = scan.nextLine();
 			
 			sm.printComments(marketName);
@@ -80,7 +99,7 @@ public class MainManager {
 			break;
 		}
 		
-		System.out.println("\n½Ã½ºÅÛ Á¾·á.");
+		System.out.println("\nì‹œìŠ¤í…œ ì¢…ë£Œ.");
 		
 		
 		sm.disconnect();
